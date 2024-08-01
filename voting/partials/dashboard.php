@@ -14,10 +14,16 @@ if($_SESSION['status'] == 1){
 }
 
 // Connect to the database
-$servername = "localhost:3308";
+//$servername = "localhost:3308";
+//$username = "root";
+//$password = "";
+//$dbname = "votingsystem";
+
+$servername = "localhost:3306";
 $username = "root";
 $password = "";
 $dbname = "votingsystem";
+
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
