@@ -1,5 +1,10 @@
 <?php
-$servername = "localhost:3308";
+// $servername = "localhost:3308";
+// $username = "root";
+// $password = "";
+// $database = "votingsystem";
+//hosted
+$servername = "localhost:3306";
 $username = "root";
 $password = "";
 $database = "votingsystem";
