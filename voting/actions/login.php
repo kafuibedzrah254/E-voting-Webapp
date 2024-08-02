@@ -100,9 +100,9 @@ if ($result->num_rows > 0) {
             exit;
         }
     } else {
-        echo '<script>alert("Invalid credentials"); window.location = "../";</script>';
+        echo '<script>alert("Invalid credentials 1"); window.location = "../";</script>';
     }
 } else {
-    echo '<script>alert("Invalid credentials"); window.location = "../";</script>';
+    echo '<script>alert("Invalid credentials 2"); window.location = "../";</script>';
 }
 ?>
