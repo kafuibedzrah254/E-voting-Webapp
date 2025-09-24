@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start();
 include('../settings/connect.php');
 
@@ -18,10 +20,12 @@ if ($result->num_rows > 0) {
 
     // Verify the password for userdata
     if (password_verify($password, $hashed_password)) {
+        
         $_SESSION['id'] = $data['id'];
         $_SESSION['status'] = $data['status'];
         $_SESSION['data'] = $data;
         $_SESSION['standard'] = $data['standard'];
+
 
         // Check if the user is an admin
         if ($data['standard'] == "admin") {
