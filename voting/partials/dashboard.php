@@ -62,13 +62,13 @@ $conn->close();
       top: 0;
       z-index: 1000;
     }
-    
+
     /* Main container */
     .dashboard-container {
       padding: 20px;
       margin-top: 80px; /* Space for fixed navbar */
     }
-    
+
     /* Voter profile */
     .profile-card {
       background: rgba(255,255,255,0.95);
@@ -100,7 +100,7 @@ $conn->close();
     .profile-card .badge {
       font-size: 0.7rem;
     }
-    
+
     /* Candidate cards */
     .candidate-card {
       transition: transform 0.2s ease;
@@ -113,7 +113,8 @@ $conn->close();
     .candidate-card img {
       width: 120px;
       height: 120px;
-      object-fit: cover;
+      object-fit: contain; /* ✅ Prevents cropping */
+      object-position: center top; /* ✅ Align top to keep heads visible */
       border-radius: 0.5rem;
       background: #f8f9fa;
       margin-right: 15px;
@@ -129,23 +130,21 @@ $conn->close();
     .vote-btn:hover {
       background: #d62828;
     }
-    
+
     .candidate-info {
       flex: 1;
     }
-    
+
     /* === Responsive behavior === */
     /* On small screens: profile above candidates */
     @media (max-width: 991px) {
       .profile-card {
         margin: 0 auto 20px;
       }
-      
       .candidate-card {
         flex-direction: column;
         text-align: center;
       }
-      
       .candidate-card img {
         margin-right: 0;
         margin-bottom: 15px;
@@ -154,7 +153,7 @@ $conn->close();
         height: 150px;
       }
     }
-    
+
     /* On large screens: profile to the far right */
     @media (min-width: 992px) {
       .dashboard-container {
@@ -162,26 +161,21 @@ $conn->close();
         gap: 30px;
         align-items: flex-start;
       }
-      
       .candidates-section {
         flex: 2;
       }
-      
       .profile-section {
         flex: 1;
         max-width: 280px;
         position: sticky;
         top: 100px; /* Below navbar */
       }
-      
       .profile-card {
         margin: 0;
       }
-      
       .candidate-card {
         flex-direction: row;
       }
-      
       .candidate-card img {
         margin-right: 15px;
         margin-bottom: 0;
@@ -209,7 +203,7 @@ $conn->close();
     <div class="candidates-section">
       <div class="container py-3">
         <h2 class="mb-4 text-center">Welcome to the E-Voting System</h2>
-        
+
         <!-- Voter profile (appears above candidates on small screens) -->
         <div class="d-lg-none">
           <div class="card profile-card">
@@ -221,31 +215,29 @@ $conn->close();
             </span>
           </div>
         </div>
-        
+
         <div class="col-lg-12">
           <h4 class="mb-3">Candidates</h4>
           <?php if (!empty($candidates)): ?>
             <div class="candidates-list">
-        <?php foreach ($candidates as $candidate): ?>
-        <div class="card candidate-card shadow-sm">
-            
-            <!-- If photo is stored as BLOB, use this instead -->
-            <img src="data:image/jpeg;base64,<?php echo base64_encode($candidate['photo']); ?>" alt="Candidate Photo">
-
-            <div class="candidate-info">
-            <h5 class="card-title text-dark mb-3">
-                <i class="fa fa-user-circle text-primary me-2"></i>
-                <?php echo htmlspecialchars($candidate['username']); ?>
-            </h5>
-            <form action="../actions/voting.php" method="POST">
-                <input type="hidden" name="candidate_id" value="<?php echo $candidate['id']; ?>">
-                <button type="submit" class="btn vote-btn text-white">
-                <i class="fa fa-check-circle me-1"></i> Vote
-                </button>
-            </form>
-            </div>
-        </div>
-        <?php endforeach; ?>
+              <?php foreach ($candidates as $candidate): ?>
+                <div class="card candidate-card shadow-sm">
+                  <!-- Candidate image from BLOB -->
+                  <img src="data:image/jpeg;base64,<?php echo base64_encode($candidate['photo']); ?>" alt="Candidate Photo">
+                  <div class="candidate-info">
+                    <h5 class="card-title text-dark mb-3">
+                      <i class="fa fa-user-circle text-primary me-2"></i>
+                      <?php echo htmlspecialchars($candidate['username']); ?>
+                    </h5>
+                    <form action="../actions/voting.php" method="POST">
+                      <input type="hidden" name="candidate_id" value="<?php echo $candidate['id']; ?>">
+                      <button type="submit" class="btn vote-btn text-white">
+                        <i class="fa fa-check-circle me-1"></i> Vote
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              <?php endforeach; ?>
             </div>
           <?php else: ?>
             <div class="alert alert-light text-dark mt-3">
@@ -255,7 +247,7 @@ $conn->close();
         </div>
       </div>
     </div>
-    
+
     <!-- Voter profile (appears on the right on large screens) -->
     <div class="profile-section d-none d-lg-block">
       <div class="card profile-card">
@@ -268,7 +260,7 @@ $conn->close();
       </div>
     </div>
   </div>
-  
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
