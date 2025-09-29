@@ -1,16 +1,20 @@
 <?php
 session_start();
-if(!isset($_SESSION['id'])){
+if (!isset($_SESSION['id'])) {
     header('location:../');
 }
 
 $data = $_SESSION['data'];
 $loggedInId = $data['id'];
 
-if($_SESSION['status'] == 1){
-    $status = '<b class="text-success">Voted</b>';
-}else{
-    $status = '<b class="text-warning">Not Voted</b>'; // Added status for non-voted users
+// Decide status text and color
+// Decide status text and color
+if ($_SESSION['status'] == 1) {
+    $statusText = "Voted";
+    $statusClass = "bg-success"; // green
+} else {
+    $statusText = "Not Voted";
+    $statusClass = "bg-danger"; // red
 }
 
 // Connect to the database
@@ -20,22 +24,18 @@ $password = "";
 $dbname = "votingsystem";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
-
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 $sql = "SELECT id, username, photo FROM candidates WHERE standard = 'candidate' ";
 $result = $conn->query($sql);
-
 $candidates = [];
-
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
         $candidates[] = $row;
     }
 }
-
 $conn->close();
 ?>
 
@@ -210,9 +210,9 @@ $conn->close();
             <img src="../uploads/<?php echo htmlspecialchars($data['photo']); ?>" alt="User Image">
             <h5 class="fw-bold mb-1"><?php echo htmlspecialchars($data['username']); ?></h5>
             <p class="text-muted mb-1"><?php echo htmlspecialchars($data['mobile']); ?></p>
-            <span class="badge bg-success px-2 py-1">
-              <?php echo $status; ?>
-            </span>
+          <span class="badge <?php echo $statusClass; ?> px-2 py-1">
+            <?php echo $statusText; ?>
+          </span>
           </div>
         </div>
 
@@ -254,8 +254,8 @@ $conn->close();
         <img src="../uploads/<?php echo htmlspecialchars($data['photo']); ?>" alt="User Image">
         <h5 class="fw-bold mb-1"><?php echo htmlspecialchars($data['username']); ?></h5>
         <p class="text-muted mb-1"><?php echo htmlspecialchars($data['mobile']); ?></p>
-        <span class="badge bg-success px-2 py-1">
-          <?php echo $status; ?>
+        <span class="badge <?php echo $statusClass; ?> px-2 py-1">
+          <?php echo $statusText; ?>
         </span>
       </div>
     </div>
