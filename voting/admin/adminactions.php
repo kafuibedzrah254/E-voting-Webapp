@@ -12,11 +12,13 @@ function getCandidatesData($con) {
 
     $data = [];
     while ($row = mysqli_fetch_assoc($candidates_result)) {
-        $row['photo'] = base64_encode($row['photo']);
+        if (!empty($row['photo'])) {
+            $row['photo'] = base64_encode($row['photo']);
+        } else {
+            $row['photo'] = null; // keep it clean JSON
+        }
         $data[] = $row;
     }
-
-    return $data;
 }
 
 // Function to get polls data
@@ -34,6 +36,7 @@ function getPollsData($con) {
     }
 
     return $data;
+    
 }
 
 // Function to get database analytics data

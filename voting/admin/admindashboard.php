@@ -66,18 +66,22 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <p>Number of Polls: ${data.polls}</p>
                             </div>
                         `;
-                    } else if (section === 'candidates') {
-                        html = '<div class="section"><h2>Candidates and Their Total Votes</h2><table><tr><th>Username</th><th>Photo</th><th>Total Votes</th></tr>';
-                        data.forEach(row => {
-                            html += `<tr><td>${row.username}</td><td><img src="data:image/jpeg;base64,${row.photo}" alt="Candidate Photo"></td><td>${row.votes}</td></tr>`;
-                        });
-                        html += '</table></div>';
-                    } else if (section === 'polls') {
-                        html = '<div class="section"><h2>Poll Results</h2><table><tr><th>Poll Question</th><th>Options</th></tr>';
-                        data.forEach(row => {
-                            html += `<tr><td>${row.question}</td><td>1. ${row.first_option}<br>2. ${row.second_option}<br>3. ${row.third_option}<br>4. ${row.fourth_option}</td></tr>`;
-                        });
-                        html += '</table></div>';
+                } else if (section === 'candidates') {
+                    html = '<div class="section"><h2>Candidates and Their Total Votes</h2><table><tr><th>Username</th><th>Photo</th><th>Total Votes</th></tr>';
+                    data.forEach(row => {
+                        html += `<tr>
+                                <td>${row.username}</td>
+                                <td><img src="data:image/jpeg;base64,${row.photo}" alt="Candidate Photo"></td>
+                                <td>${row.total_votes}</td>
+                                </tr>`;
+                    });
+                    html += '</table></div>';
+                } else if (section === 'polls') {
+                    html = '<div class="section"><h2>Poll Results</h2><table><tr><th>Poll Question</th><th>Options</th></tr>';
+                    data.forEach(row => {
+                        html += `<tr><td>${row.question}</td><td>1. ${row.first_option}<br>2. ${row.second_option}<br>3. ${row.third_option}<br>4. ${row.fourth_option}</td></tr>`;
+                    });
+                    html += '</table></div>';
                     } else if (section === 'voters') {
                         html = '<div class="section"><h2>Voters</h2><table><tr><th>Username</th><th>Email</th><th>Status</th><th>Photo</th><th>Actions</th></tr>';
                         data.forEach(row => {
