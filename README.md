@@ -30,7 +30,7 @@ The goal is to provide a transparent, efficient, and accessible alternative to t
 
 ---
 
-## ⚙️ Installation & Setup
+
 
 
 
