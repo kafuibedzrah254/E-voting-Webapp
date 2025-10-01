@@ -10,8 +10,8 @@ $userdata_query = "SELECT COUNT(*) as count FROM userdata";
 $userdata_result = mysqli_query($con, $userdata_query);
 $userdata_count = mysqli_fetch_assoc($userdata_result)['count'];
 
-// Fetch the number of rows in candidates2 table
-$candidates_query = "SELECT COUNT(*) as count FROM candidates2";
+// Fetch the number of rows in candidates table
+$candidates_query = "SELECT COUNT(*) as count FROM candidates";
 $candidates_result = mysqli_query($con, $candidates_query);
 $candidates_count = mysqli_fetch_assoc($candidates_result)['count'];
 
@@ -75,7 +75,7 @@ $polls_count = mysqli_fetch_assoc($polls_result)['count'];
                     <th>Total Votes</th>
                 </tr>
                 <?php
-                $candidates_data_query = "SELECT username, photo, votes FROM candidates2";
+                $candidates_data_query = "SELECT username, photo, votes FROM candidates";
                 $candidates_data_result = mysqli_query($con, $candidates_data_query);
                 while ($row = mysqli_fetch_assoc($candidates_data_result)) { ?>
                 <tr>

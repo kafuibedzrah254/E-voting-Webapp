@@ -3,20 +3,19 @@ include('../settings/connect.php');
 
 // Function to get candidates data
 function getCandidatesData($con) {
-    $voters_query = "SELECT username, photo, votes FROM candidates2";
-    $voters_result = mysqli_query($con, $voters_query);
-    
-    if (!$voters_result) {
-        return ['error' => 'Failed to fetch voters data: ' . mysqli_error($con)];
+    $candidates_query = "SELECT username, photo, total_votes FROM candidates";
+    $candidates_result = mysqli_query($con, $candidates_query);
+
+    if (!$candidates_result) {
+        return ['error' => 'Failed to fetch candidates data: ' . mysqli_error($con)];
     }
-    
+
     $data = [];
-    while ($row = mysqli_fetch_assoc($voters_result)) {
-        // Ensure the photo data is base64 encoded
+    while ($row = mysqli_fetch_assoc($candidates_result)) {
         $row['photo'] = base64_encode($row['photo']);
         $data[] = $row;
     }
-    
+
     return $data;
 }
 
@@ -24,33 +23,33 @@ function getCandidatesData($con) {
 function getPollsData($con) {
     $polls_query = "SELECT question, first_option, second_option, third_option, fourth_option FROM polls";
     $polls_result = mysqli_query($con, $polls_query);
-    
+
     if (!$polls_result) {
         return ['error' => 'Failed to fetch polls data: ' . mysqli_error($con)];
     }
-    
+
     $data = [];
     while ($row = mysqli_fetch_assoc($polls_result)) {
         $data[] = $row;
     }
-    
+
     return $data;
 }
 
 // Function to get database analytics data
 function getDatabaseAnalytics($con) {
     $userdata_count = mysqli_query($con, "SELECT COUNT(*) as count FROM userdata");
-    $candidates2_count = mysqli_query($con, "SELECT COUNT(*) as count FROM candidates2");
+    $candidates_count = mysqli_query($con, "SELECT COUNT(*) as count FROM candidates");
     $polls_count = mysqli_query($con, "SELECT COUNT(*) as count FROM polls");
 
-    if (!$userdata_count || !$candidates2_count || !$polls_count) {
+    if (!$userdata_count || !$candidates_count || !$polls_count) {
         return ['error' => 'Failed to fetch database analytics data: ' . mysqli_error($con)];
     }
 
     return [
-        'userdata' => mysqli_fetch_assoc($userdata_count)['count'],
-        'candidates2' => mysqli_fetch_assoc($candidates2_count)['count'],
-        'polls' => mysqli_fetch_assoc($polls_count)['count']
+        'userdata'   => mysqli_fetch_assoc($userdata_count)['count'],
+        'candidates' => mysqli_fetch_assoc($candidates_count)['count'],
+        'polls'      => mysqli_fetch_assoc($polls_count)['count']
     ];
 }
 
@@ -58,20 +57,17 @@ function getDatabaseAnalytics($con) {
 function getVotersData($con) {
     $voters_query = "SELECT username, email, status, photo FROM userdata";
     $voters_result = mysqli_query($con, $voters_query);
-    
+
     if (!$voters_result) {
-        error_log('Query Error: ' . mysqli_error($con)); // Log query error
         return ['error' => 'Failed to fetch voters data: ' . mysqli_error($con)];
     }
-    
+
     $data = [];
     while ($row = mysqli_fetch_assoc($voters_result)) {
-        // Ensure the photo data is base64 encoded
         $row['photo'] = base64_encode($row['photo']);
-        error_log('Fetched Row: ' . print_r($row, true)); // Log fetched row
         $data[] = $row;
     }
-    
+
     return $data;
 }
 
@@ -83,6 +79,7 @@ function deleteVoter($con, $username) {
     return $stmt->execute();
 }
 
+// --- Main Script ---
 header('Content-Type: application/json');
 $response = [];
 
@@ -115,7 +112,6 @@ if (isset($_GET['section'])) {
             break;
         default:
             $response = ['error' => 'Invalid section'];
-            break;
     }
 } else {
     $response = ['error' => 'No section specified'];
@@ -123,4 +119,3 @@ if (isset($_GET['section'])) {
 
 echo json_encode($response);
 exit;
-?>

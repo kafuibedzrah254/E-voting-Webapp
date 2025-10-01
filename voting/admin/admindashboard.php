@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <div class="section">
                                 <h2>Database Analytics</h2>
                                 <p>Number of Users: ${data.userdata}</p>
-                                <p>Number of Candidates: ${data.candidates2}</p>
+                                <p>Number of Candidates: ${data.candidates}</p>
                                 <p>Number of Polls: ${data.polls}</p>
                             </div>
                         `;
