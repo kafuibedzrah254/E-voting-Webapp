@@ -15,10 +15,12 @@ function getCandidatesData($con) {
         if (!empty($row['photo'])) {
             $row['photo'] = base64_encode($row['photo']);
         } else {
-            $row['photo'] = null; // keep it clean JSON
+            $row['photo'] = ''; // Set to empty string instead of null
         }
         $data[] = $row;
     }
+    
+    return $data; // ADD THIS MISSING RETURN STATEMENT
 }
 
 // Function to get polls data
@@ -36,7 +38,6 @@ function getPollsData($con) {
     }
 
     return $data;
-    
 }
 
 // Function to get database analytics data
@@ -67,7 +68,11 @@ function getVotersData($con) {
 
     $data = [];
     while ($row = mysqli_fetch_assoc($voters_result)) {
-        $row['photo'] = base64_encode($row['photo']);
+        if (!empty($row['photo'])) {
+            $row['photo'] = base64_encode($row['photo']);
+        } else {
+            $row['photo'] = ''; // Set to empty string instead of null
+        }
         $data[] = $row;
     }
 
@@ -122,3 +127,4 @@ if (isset($_GET['section'])) {
 
 echo json_encode($response);
 exit;
+?>

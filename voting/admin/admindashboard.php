@@ -66,28 +66,40 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <p>Number of Polls: ${data.polls}</p>
                             </div>
                         `;
-                } else if (section === 'candidates') {
-                    html = '<div class="section"><h2>Candidates and Their Total Votes</h2><table><tr><th>Username</th><th>Photo</th><th>Total Votes</th></tr>';
-                    data.forEach(row => {
-                        html += `<tr>
-                                <td>${row.username}</td>
-                                <td><img src="data:image/jpeg;base64,${row.photo}" alt="Candidate Photo"></td>
-                                <td>${row.total_votes}</td>
-                                </tr>`;
-                    });
-                    html += '</table></div>';
-                } else if (section === 'polls') {
-                    html = '<div class="section"><h2>Poll Results</h2><table><tr><th>Poll Question</th><th>Options</th></tr>';
-                    data.forEach(row => {
-                        html += `<tr><td>${row.question}</td><td>1. ${row.first_option}<br>2. ${row.second_option}<br>3. ${row.third_option}<br>4. ${row.fourth_option}</td></tr>`;
-                    });
-                    html += '</table></div>';
+                    } else if (section === 'candidates') {
+                        if (data.length === 0) {
+                            html = '<div class="section"><h2>Candidates and Their Total Votes</h2><p>No candidates found.</p></div>';
+                        } else {
+                            html = '<div class="section"><h2>Candidates and Their Total Votes</h2><table><tr><th>Username</th><th>Photo</th><th>Total Votes</th></tr>';
+                            data.forEach(row => {
+                                html += `<tr>
+                                        <td>${row.username}</td>
+                                        <td><img src="data:image/jpeg;base64,${row.photo}" alt="Candidate Photo" style="width: 50px; height: 50px;"></td>
+                                        <td>${row.total_votes}</td> <!-- FIXED THIS LINE -->
+                                        </tr>`;
+                            });
+                            html += '</table></div>';
+                        }
+                    } else if (section === 'polls') {
+                        if (data.length === 0) {
+                            html = '<div class="section"><h2>Poll Results</h2><p>No polls found.</p></div>';
+                        } else {
+                            html = '<div class="section"><h2>Poll Results</h2><table><tr><th>Poll Question</th><th>Options</th></tr>';
+                            data.forEach(row => {
+                                html += `<tr><td>${row.question}</td><td>1. ${row.first_option}<br>2. ${row.second_option}<br>3. ${row.third_option}<br>4. ${row.fourth_option}</td></tr>`;
+                            });
+                            html += '</table></div>';
+                        }
                     } else if (section === 'voters') {
-                        html = '<div class="section"><h2>Voters</h2><table><tr><th>Username</th><th>Email</th><th>Status</th><th>Photo</th><th>Actions</th></tr>';
-                        data.forEach(row => {
-                            html += `<tr><td>${row.username}</td><td>${row.email}</td><td>${row.status}</td><td><img src="data:image/jpeg;base64,${row.photo}" alt="Voter Photo"></td><td><button class="delete-button" data-username="${row.username}">Delete</button></td></tr>`;
-                        });
-                        html += '</table></div>';
+                        if (data.length === 0) {
+                            html = '<div class="section"><h2>Voters</h2><p>No voters found.</p></div>';
+                        } else {
+                            html = '<div class="section"><h2>Voters</h2><table><tr><th>Username</th><th>Email</th><th>Status</th><th>Photo</th><th>Actions</th></tr>';
+                            data.forEach(row => {
+                                html += `<tr><td>${row.username}</td><td>${row.email}</td><td>${row.status}</td><td><img src="data:image/jpeg;base64,${row.photo}" alt="Voter Photo" style="width: 50px; height: 50px;"></td><td><button class="delete-button" data-username="${row.username}">Delete</button></td></tr>`;
+                            });
+                            html += '</table></div>';
+                        }
                     }
                     content.innerHTML = html;
 
